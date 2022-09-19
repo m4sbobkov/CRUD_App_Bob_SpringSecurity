@@ -20,11 +20,14 @@ public class UsersController {
 
     }
 
+    @GetMapping
+    public String homePage() {
+        return "home";
+    }
 
     @GetMapping("/user/{id}")
-    public String userInfo(@PathVariable("id") Long id, Model model){
+    public String userInfo(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", service.userById(id));
-
         return "user";
     }
 

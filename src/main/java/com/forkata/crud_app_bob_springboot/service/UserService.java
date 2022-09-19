@@ -1,8 +1,6 @@
 package com.forkata.crud_app_bob_springboot.service;
 
 
-
-import com.forkata.crud_app_bob_springboot.model.Role;
 import com.forkata.crud_app_bob_springboot.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -12,13 +10,11 @@ public interface UserService extends UserDetailsService {
 
     List<User> listUsers();
 
-    List<Role> getRoles(User user);
-
     User userById(Long id);
 
     void save(User user);
 
-    void delete (Long id);
+    void delete(Long id);
 
     void create(User user);
 

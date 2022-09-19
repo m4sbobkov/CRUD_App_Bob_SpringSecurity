@@ -15,6 +15,7 @@
             <th>Age</th>
             <th>Username</th>
             <th>Email</th>
+            <th>Roles</th>
 
         </tr>
         <tr th:object="${user}">
@@ -23,6 +24,7 @@
             <td th:utext="${user.getAge()}">age</td>
             <td th:utext="${user.getUsername()}">username</td>
             <td th:utext="${user.getEmail()}">email</td>
+            <td th:utext="${user.getRoles()}">roles</td>
 
         </tr>
 
