@@ -1,14 +1,12 @@
 package com.forkata.crud_app_bob_springboot.service;
 
 
-import com.forkata.crud_app_bob_springboot.model.Role;
 import com.forkata.crud_app_bob_springboot.model.User;
+import com.forkata.crud_app_bob_springboot.repositories.RolesRepository;
 import com.forkata.crud_app_bob_springboot.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +17,16 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UsersRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final RolesRepository rolesRepository;
 
 
     @Autowired
-    public UserServiceImpl(UsersRepository repository) {
+    public UserServiceImpl(UsersRepository repository, PasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+        this.rolesRepository = rolesRepository;
     }
-
 
     @Override
 
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
 
     public User userById(Long id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElseThrow();
     }
 
     @Override
@@ -46,18 +47,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(User user) {
-        user.setPassword(PasswordEncoder().encode(user.getPassword()));
-        user.addRole(Role.USER);
-        repository.save(user);
-
-    }
-
-    @Override
-    public void makeAdmin(User user) {
-        user.addRole(Role.ADMIN);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getRoles().isEmpty()) {
+            user.addRole(rolesRepository.getReferenceById(2));
+        }
         repository.save(user);
     }
-
 
     @Override
     public void delete(Long id) {
@@ -71,11 +66,6 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found");
         }
         return user;
-    }
-
-    @Bean
-    public PasswordEncoder PasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
 

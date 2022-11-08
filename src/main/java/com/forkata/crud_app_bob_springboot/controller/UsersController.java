@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class UsersController {
     private final UserService service;
 
-
     @Autowired
     public UsersController(UserService service) {
         this.service = service;
-
     }
 
     @GetMapping
@@ -30,5 +28,4 @@ public class UsersController {
         model.addAttribute("user", service.userById(id));
         return "user";
     }
-
 }

@@ -21,9 +21,9 @@
     <div th:each="role:${roles}">
         <input th:type="checkbox"
                th:name="roles"
-               th:value="${role}">
+               th:value="${role.getId()}">
 
-        <label th:text="${role}" ></label>
+        <label th:text="${role.getName()}" ></label>
     </div>
     <input type="submit" value="Add"/>
 </form>
